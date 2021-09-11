@@ -56,8 +56,6 @@ def inf(queue, chat_id):
             m = "Error"
         queue.put(m)
 
-# http://127.0.0.1:5000/getchatmemberscount?id=-1001192016123
-
 
 @appX.route('/getchatmemberscount')
 def get_num():
@@ -85,8 +83,6 @@ def get_num():
     jsonStr = json.dumps({'count': str(m)})
 
     return jsonStr, 200, {'Content-Type': 'application/json'}
-
-# http://127.0.0.1:5000/getchatmembers?id=-1001192016123
 
 
 @appX.route('/getchatmembers')
