@@ -107,8 +107,6 @@ def get_info():
     if m == "Error":
         return "Error"
 
-    # _count = ()
-# "@Manehattan"
     print(" m :",  m)
 
     try:
