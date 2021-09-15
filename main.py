@@ -14,6 +14,44 @@ appTG = Client("my_account")
 app = Flask(__name__)
 
 
+def get_user(id):
+    m = None
+
+    try:
+        time.sleep(0.1)
+        # print("id: ", id)
+        z = appTG.get_users(id)
+        m = {
+            "id":  z.id,
+            "is_self": z.is_self,
+            "is_contact": z.is_contact,
+            "is_mutual_contact": z.is_mutual_contact,
+            "is_deleted": z.is_deleted,
+            "is_bot": z.is_bot,
+            "is_verified": z.is_verified,
+            "is_restricted": z.is_restricted,
+            "is_scam": z.is_scam,
+            "is_fake": z.is_fake,
+            "is_support": z.is_support,
+            "first_name": z.first_name,
+            "last_name": z.last_name,
+            "status": z.status,
+            "last_online_date": z.last_online_date,
+            "next_offline_date": z.next_offline_date,
+            "username": z.username,
+            "language_code": z.language_code,
+            "dc_id": z.dc_id,
+            "phone_number": z.phone_number,
+            "photo": z.photo.big_file_id,
+            "restrictions": z.restrictions,
+            "mention": z.mention,
+        }
+    except Exception as e:
+        print("e: ", e)
+        return "Error", str(e)
+    return m, None
+
+
 def get_chats():
     z = []
     try:
@@ -114,6 +152,17 @@ def get_count(id):
     return m, err
 
 
+@app.route('/getuser')
+def handle_get_user():
+    id = request.args.get('id')
+    user, err = get_user(id)
+    if user == "Error":
+        jsonStr = json.dumps({'user': None, 'error': err})
+        return jsonStr, 200, {'Content-Type': 'application/json'}
+    jsonStr = json.dumps({'user': user, 'error': err})
+    return jsonStr, 200, {'Content-Type': 'application/json'}
+
+
 @app.route('/getchats')
 def handle_get_chats():
     chats = get_chats()
@@ -127,7 +176,6 @@ def handle_get_chats():
 
 @app.route('/getchatinvitelink')
 def handle_get_chat_invite_link():
-
     chat_id = request.args.get('id')
     chats, e = check_chat_invite_link(chat_id)
     if chats == "Error":
@@ -168,7 +216,7 @@ def handle_get_info():
     n = c
     offset = 0
     chatList = []
-    #print("N:", n)
+    # print("N:", n)
     for i in range(1, n + 1):
       #  print("cicle:", i)
         zm, err = get_member(chat_id, offset)
