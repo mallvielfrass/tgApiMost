@@ -32,7 +32,7 @@ def get_chats():
     return z
 
 
-def get_chat_invite_link(id):
+def check_chat_invite_link(id):
     m = None
     typeM = None
     try:
@@ -129,7 +129,7 @@ def handle_get_chats():
 def handle_get_chat_invite_link():
 
     chat_id = request.args.get('id')
-    chats, e = get_chat_invite_link(chat_id)
+    chats, e = check_chat_invite_link(chat_id)
     if chats == "Error":
         jsonStr = json.dumps({'info': None, 'error': e})
         return jsonStr, 200, {'Content-Type': 'application/json'}
